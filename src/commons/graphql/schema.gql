@@ -1,0 +1,92 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Post {
+  id: String!
+  userName: String!
+  title: String!
+  content: String!
+  like: Int!
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  id: String!
+  userId: String!
+  userName: String!
+  userDecs: String!
+}
+
+type UserProfile {
+  userId: String!
+  userName: String!
+  userDecs: String!
+}
+
+type Comment {
+  id: String!
+  userName: String!
+  postId: String!
+  content: String!
+}
+
+type Like {
+  id: String!
+  userId: String!
+  postId: String!
+  like: Int!
+}
+
+type Query {
+  fetchPosts(page: Int!, pageSize: Int!): [Post!]!
+  fetchPostbyPostId(postID: String!): Post!
+  fetchPostCount: Float!
+  tokenChecking(token: String!): User!
+  fetchUserProfile(userId: String!): UserProfile!
+  fetchComments(postId: String!): [Comment!]!
+  fetchComment(commentId: String!): Comment!
+  likesByPostId(postId: String!): Int!
+  fetchLike(token: String!, postId: String!): Like!
+}
+
+type Mutation {
+  createPost(createPostInput: createPostInput!, token: String!): Post!
+  updatePost(token: String!, postId: String!, updatePostInput: createPostInput!): Post!
+  deletePost(token: String!, postId: String!): Boolean!
+  login(userId: String!, password: String!): String!
+  createUser(userId: String!, password: String!, createUserProfileInput: CreateUserProfileInput!): User!
+  uploadFile(file: Upload!): String!
+  createComment(createCommentInput: createCommentInput!, token: String!): Comment!
+  updateComment(token: String!, commentId: String!, updateCommentInput: updateCommentInput!): Comment!
+  deleteComment(token: String!, commentId: String!): Boolean!
+  toggleLike(token: String!, postId: String!): Like!
+}
+
+input createPostInput {
+  title: String!
+  content: String!
+}
+
+input CreateUserProfileInput {
+  nickName: String!
+  decs: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input createCommentInput {
+  postId: String!
+  content: String!
+}
+
+input updateCommentInput {
+  postId: String!
+  content: String!
+}

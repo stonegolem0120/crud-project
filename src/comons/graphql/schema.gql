@@ -1,0 +1,82 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Post {
+  id: String!
+  userName: String!
+  title: String!
+  content: String!
+  file: String!
+}
+
+type User {
+  id: String!
+  userId: String!
+  profileImage: String!
+}
+
+type Comment {
+  id: String!
+  userName: String!
+  postId: String!
+  content: String!
+}
+
+type Query {
+  fetchPosts(page: Int!, pageSize: Int!): [Post!]!
+  fetchComments(postId: String!): [Comment!]!
+  fetchComment(commentId: String!): Comment!
+}
+
+type Mutation {
+  createPost(createPostInput: createPostInput!, token: String!): Post!
+  updatePost(
+    token: String!
+    postId: String!
+    updatePostInput: createPostInput!
+  ): Post!
+  deletePost(token: String!, postId: String!): Boolean!
+  login(userId: String!, password: String!): String!
+  createUser(
+    userId: String!
+    password: String!
+    createUserProfileInput: createUserProfileInput!
+  ): User!
+  createComment(
+    createCommentInput: createCommentInput!
+    token: String!
+  ): Comment!
+  updateComment(
+    token: String!
+    commentId: String!
+    updateCommentInput: updateCommentInput!
+  ): Comment!
+  deleteComment(token: String!, commentId: String!): Boolean!
+}
+
+input createPostInput {
+  title: String!
+  content: String!
+}
+
+input createUserProfileInput {
+  nickName: String!
+  profileImage: Upload!
+  decs: String!
+}
+
+"""
+The `Upload` scalar type represents a file upload.
+"""
+scalar Upload
+
+input createCommentInput {
+  postId: String!
+  content: String!
+}
+
+input updateCommentInput {
+  postId: String!
+  content: String!
+}
