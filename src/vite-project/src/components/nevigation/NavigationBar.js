@@ -1,0 +1,8 @@
+import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
+import { Link } from "react-router-dom";
+import { useUser } from "../provider/usercontext";
+const NavigationBar = () => {
+    const { isLoggedIn } = useUser();
+    return (_jsx("nav", { className: "navbar navbar-expand-lg navbar-light bg-light", children: _jsxs("div", { className: "container", children: [_jsx(Link, { className: "navbar-brand", to: "/", children: "Cfw On Top" }), _jsx("button", { className: "navbar-toggler", type: "button", "data-bs-toggle": "collapse", "data-bs-target": "#navbarNav", "aria-controls": "navbarNav", "aria-expanded": "false", "aria-label": "Toggle navigation", children: _jsx("span", { className: "navbar-toggler-icon" }) }), _jsx("div", { className: "collapse navbar-collapse", id: "navbarNav", children: _jsxs("ul", { className: "navbar-nav ms-auto", children: [_jsx("li", { className: "nav-item", children: _jsx(Link, { className: "nav-link", to: "/", children: "Home" }) }), _jsx("li", { className: "nav-item", children: _jsx(Link, { className: "nav-link", to: "/about", children: "About" }) }), _jsx("li", { className: "nav-item", children: _jsx(Link, { className: "nav-link", to: "/contact", children: "Post" }) }), isLoggedIn ? (_jsx("li", { className: "nav-item", children: _jsx(Link, { className: "nav-link", to: "/profile", children: "Profile" }) })) : (_jsxs(_Fragment, { children: [_jsx("li", { className: "nav-item", children: _jsx(Link, { className: "nav-link", to: "/login", children: "Login" }) }), _jsx("li", { className: "nav-item", children: _jsx(Link, { className: "nav-link", to: "/signUp", children: "SignUp" }) })] }))] }) })] }) }));
+};
+export default NavigationBar;
