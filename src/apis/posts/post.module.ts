@@ -12,7 +12,7 @@ import { secretKey } from 'src/commons/secret/jwtSecretKey';
 import { FileEntity } from '../fileUpload/entities/upload.entity';
 import { FileService } from '../fileUpload/upload.service';
 import { CassandraService } from 'src/cassandra/cassandra.service';
-
+import { PubSub } from 'graphql-subscriptions';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Post, User, FileEntity]),
@@ -23,6 +23,10 @@ import { CassandraService } from 'src/cassandra/cassandra.service';
     // TypeOrmModule.forFeature([User]), // UserService의 의존성을 해결하기 위해 User 엔티티를 임포트
   ],
   providers: [
+    {
+      provide: 'PUB_SUB',
+      useValue: new PubSub(),
+    },
     PostService,
     PostResolver,
     JwtModule,

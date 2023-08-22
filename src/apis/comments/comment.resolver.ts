@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { CommentService } from './comment.service';
 import { Comment } from './entities/Comment.entity';
 import { createCommentInput } from './dto/create-comment.input';
@@ -6,7 +6,12 @@ import { updateCommentInput } from './dto/update-comment.input';
 
 @Resolver()
 export class CommentResolver {
-  constructor(private readonly commentService: CommentService) {}
+  constructor(private readonly commentService: CommentService) { }
+  @Subscription(() => Comment)
+  commentAdded() {
+    return this.commentService.pubSub.asyncIterator('commentAdded');
+  }
+
   @Query(() => [Comment])
   fetchComments(
     @Args('postId') postId: string, //

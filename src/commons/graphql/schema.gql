@@ -90,3 +90,8 @@ input updateCommentInput {
   postId: String!
   content: String!
 }
+
+type Subscription {
+  postAdded: Post!
+  commentAdded: Comment!
+}

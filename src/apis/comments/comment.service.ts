@@ -17,6 +17,7 @@ import { PostService } from '../posts/post.service';
 import { AuthService } from '../auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
+import { PubSub } from 'graphql-subscriptions';
 
 @Injectable()
 export class CommentService {
@@ -28,7 +29,8 @@ export class CommentService {
     private readonly postService: PostService, //
     private readonly authService: AuthService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
+  public pubSub: PubSub = new PubSub();
   async findAllByComment({
     postId,
   }: ICommentServiceFindAllByComment): Promise<Comment[]> {
@@ -59,10 +61,12 @@ export class CommentService {
       postId: createCommentInput.postId,
     });
     if (!post) throw new ConflictException('존재하지 않는 글입니다');
-    return await this.commentRepository.save({
+    const comment = await this.commentRepository.save({
       ...createCommentInput,
       userName,
     });
+    this.pubSub.publish('commentAdded', { commentAdded: comment });
+    return comment;
   }
 
   async update({

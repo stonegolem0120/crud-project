@@ -35,7 +35,7 @@
 // export class AppModule {}
 
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Global, MiddlewareConsumer, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostModule } from './apis/posts/post.module';
@@ -47,6 +47,8 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 import { CassandraService } from './cassandra/cassandra.service';
 import { LikeModule } from './apis/like/like.module';
 
+
+@Global()
 @Module({
   imports: [
     PostModule,
@@ -69,6 +71,12 @@ import { LikeModule } from './apis/like/like.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/commons/graphql/schema.gql',
+      subscriptions: {
+        'graphql-ws': {
+          path: '/graphql',
+        },
+        'subscriptions-transport-ws': true,
+      },
       context: ({ req, res }) => ({ req, res }),
     }),
   ],
@@ -83,6 +91,7 @@ import { LikeModule } from './apis/like/like.module';
     //   },
     //   inject: [ModulesContainer],
     // },
+
   ],
   exports: [
     // CassandraService, //

@@ -17,6 +17,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from '../users/user.service';
 import { User } from '../users/entities/user.entity';
+import { PubSub } from 'graphql-subscriptions';
 @Injectable()
 export class PostService {
   constructor(
@@ -28,6 +29,7 @@ export class PostService {
     private readonly userService: UserService,
     private readonly authService: AuthService, //
   ) {}
+  public pubSub: PubSub = new PubSub();
 
   async findAll(page: number, pageSize: number): Promise<Post[]> {
     const skip = (page - 1) * pageSize;
@@ -55,8 +57,9 @@ export class PostService {
       ...createPostInput,
       userName,
     };
-
-    return this.postRepository.save(post);
+    const returnPost = this.postRepository.save(post);
+    await this.pubSub.publish('postAdded', { postAdded: returnPost });
+    return returnPost;
   }
 
   async update({
